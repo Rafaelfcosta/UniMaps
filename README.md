@@ -10,9 +10,8 @@ $ npm install --save unimaps
 
 ## Usage
 
-```js
-var unimaps = require('unimaps');
-unimaps();
+```sh
+$ npm run dev
 ```
 
 ## License
