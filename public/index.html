@@ -22,7 +22,9 @@
 
 <body>
     <form action="">
-        <input type="text" id="test1">
+        <input type="text" id="numero">
+        <input type="text" id="bloco">
+        <input type="text" id="alias">
 
         <button id="go" type="submit">Enviar</button>
     </form>
@@ -39,7 +41,16 @@
         function insert() {
 
             var data = {}
-            data.test1 = document.getElementById('test1').value;
+            let num = parseInt(document.getElementById('numero').value);
+            let bloco = document.getElementById('bloco').value;
+            let alias = document.getElementById('alias').value;
+
+            data.num = num;
+            data.bloco = bloco;
+            if(alias != ''){
+                data.alias = alias;
+            }
+            
 
             $.ajax({
                 url: '/',
