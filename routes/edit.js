@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
     var query = { '_id': req.body.id };
     let newData;
     
-    newData.numero = req.body.numero;
+    newData.numero = req.body.num;
     newData.bloco = req.body.bloco;
     newData.alias = req.body.alias;
 

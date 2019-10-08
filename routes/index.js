@@ -6,13 +6,7 @@ let Point = require('../models/point')
 router.get('/', (req, res) => {
     
     res.type('html')
-    res.send('/public/index.html')
-    
-    // async () =>{
-    //     const result = await Point.find();
-    //     console.log(result);
-    // }
-    
+    res.sendFile('../public/index.html')  
     
 });
 
@@ -33,6 +27,7 @@ router.post('/', (req, res) => {
             return;
         } else {
             console.log('success');
+            return res.send(point);
         }
     })
 })
