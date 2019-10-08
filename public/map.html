@@ -58,13 +58,13 @@
                             <p>Inicio</p>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="edit.html">
                             <i class="fa fa-pencil" aria-hidden="true"></i>
                             <p>Editar</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="map.html">
                             <i class="fa fa-globe" aria-hidden="true"></i>
                             <p>Mapa</p>
@@ -105,13 +105,44 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="header">
-                                    <h4 class="title">Editar Locais</h4>
+                                    <h4 class="title">Definir Rota</h4>
                                 </div>
-                                <div class="content" id="editor">
+                                <div class="content">
+                                    <form class="needs-validation" novalidate="">
+                                        <div class="arrDist mb-3">
+                                            <h5>Arrival Configurations</h5>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label for="ori">Origem</label>
+                                                    <select class="form-control" name="" id="ori">
 
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="dest">Destino</label>
+                                                    <select class="form-control" name="" id="dest">
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                                <hr class="mb-4">
+
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button class="btn btn-primary btn-lg btn-block"
+                                                id="#buscar">Buscar</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
 
                     </div>
                 </div>
@@ -138,6 +169,43 @@
         </div>
     </div>
 
+    <script>
+        var HttpClient = function () {
+            this.get = function (aUrl, aCallback) {
+                var anHttpRequest = new XMLHttpRequest();
+                anHttpRequest.onreadystatechange = function () {
+                    if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+                        aCallback(anHttpRequest.responseText);
+                }
+
+                anHttpRequest.open("GET", aUrl, true);
+                anHttpRequest.send(null);
+            }
+        }
+
+        var populateSelect = function () {
+            var client = new HttpClient();
+            client.get('http://localhost:8888/points', function (response) {
+                let points = JSON.parse(response);
+
+                points.forEach(point => {
+                    let element = document.createElement('option')
+                    let element2 = document.createElement('option')
+                    // '<option value="a">Test</option>'
+                    // element.className = point._id
+                    element.innerHTML = point.numero + ' - ' + point.bloco
+                    element.value = point._id
+                    element2.innerHTML = point.numero + ' - ' + point.bloco
+                    element2.value = point._id
+
+                    document.getElementById('ori').appendChild(element);
+                    document.getElementById('dest').appendChild(element2);
+                });
+            });
+        }
+
+        populateSelect();
+    </script>
 
 </body>
 
@@ -151,6 +219,6 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 <!--  My Scripts    -->
-<script src="js/main.js"></script>
+<!-- <script src="js/main.js"></script> -->
 
 </html>
