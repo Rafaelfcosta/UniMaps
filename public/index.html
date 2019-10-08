@@ -23,10 +23,10 @@
 <body>
     <form action="">
         <label for="">numero</label>
-        <input type="text" id="numero">
+        <input type="text" id="numero" value="10">
         <br>
         <label for="">bloco</label>
-        <input type="text" id="bloco">
+        <input type="text" id="bloco" value="B6">
         <br>
         <label for="">Outro nome</label>
         <input type="text" id="alias">
@@ -34,46 +34,12 @@
         <button id="go" type="submit">Enviar</button>
     </form>
 
+    <div>
+        <ul id="list"></ul>
+    </div>
+
     <script>
 
-        $('#go').click(function (evt) {
-            insert()
-            evt.preventDefault()
-            return false
-        });
-
-
-        function insert() {
-
-            var data = {}
-            let num = parseInt(document.getElementById('numero').value);
-            let bloco = document.getElementById('bloco').value;
-            let alias = document.getElementById('alias').value;
-
-            data.num = num;
-            data.bloco = bloco;
-            if(alias != ''){
-                data.alias = alias;
-            }
-            
-
-            $.ajax({
-                url: '/',
-                type: 'POST',
-                data: JSON.stringify(data),
-                contentType: 'application/json',
-                cache: false,
-                success: function (data, textStatus, jQxhr) {
-                    console.log('success');
-                    console.log(data);
-                    return true;
-                },
-                error: function (jqXhr, textStatus, errorThrown) {
-                    console.log(errorThrown);
-                    return false;
-                }
-            })
-        }
 
     </script>
 </body>

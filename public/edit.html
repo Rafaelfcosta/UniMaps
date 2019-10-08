@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>UniMaps</title>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <form action="">
+        <label for="">numero</label>
+        <input type="text" id="numero" value="10">
+        <br>
+        <label for="">bloco</label>
+        <input type="text" id="bloco" value="B6">
+        <br>
+        <label for="">Outro nome</label>
+        <input type="text" id="alias">
+
+        <button id="go" type="submit">Enviar</button>
+    </form>
+
+    <div>
+        <ul id="list"></ul>
+    </div>
+
+    <script>
+
+        $('#go').click(function (evt) {
+            insert()
+            evt.preventDefault()
+            return false
+        });
+
+        function insert() {
+
+            var data = {}
+            let num = parseInt(document.getElementById('numero').value);
+            let bloco = document.getElementById('bloco').value;
+            let alias = document.getElementById('alias').value;
+
+            data.num = num;
+            data.bloco = bloco;
+            if (alias != '') {
+                data.alias = alias;
+            }
+
+
+            $.ajax({
+                url: '/',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                cache: false,
+                success: function (data, textStatus, jQxhr) {
+                    console.log('success');
+                    return true;
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    return false;
+                }
+            })
+        }
+
+        var HttpClient = function () {
+            this.get = function (aUrl, aCallback) {
+                var anHttpRequest = new XMLHttpRequest();
+                anHttpRequest.onreadystatechange = function () {
+                    if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+                        aCallback(anHttpRequest.responseText);
+                }
+
+                anHttpRequest.open("GET", aUrl, true);
+                anHttpRequest.send(null);
+            }
+        }
+
+        var client = new HttpClient();
+        client.get('http://localhost:8888/points', function (response) {
+            let points = JSON.parse(response);
+
+            points.forEach(point => {
+                let element = document.createElement('p')
+                element.className = 'row' + ' ' + point._id
+                element.innerHTML = point.numero + ' - ' + point.bloco + ' - ' + '<button id=' + point._id + ' onClick="deletar(this.id);"> deletar </button>'
+                document.getElementById('list').appendChild(element);
+            });
+        });
+
+        function deletar(id) {
+            var data = {}
+
+            data.id = id
+
+            $.ajax({
+                url: '/remove',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                cache: false,
+                success: function (data, textStatus, jQxhr) {
+                    console.log('removed');
+                    $('.'+id).remove();
+                    return true;
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    return false;
+                }
+            })
+        }
+
+    </script>
+</body>
+
+
+
+</html>
